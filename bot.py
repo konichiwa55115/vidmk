@@ -46,17 +46,11 @@ def _telegram_file(client, message):
   file = message.audio
   global file_path
   file_path = message.download(file_name="aud")
-  global mp3file
-  mp3file = "mp3file.mp3"
   global mp4file
   mp4file="mp4file.mp4"
   global picture
   picture = "./picy/pic"
-  global tempmp3
-  tempmp3 = "mod"+mp3file
-  cmd(f'ffmpeg -i {file_path} -vf arnndn=m=./rnnoise-models/somnolent-hogwash-2018-09-01/sh.rnnn ./downloads/{tempmp3} -y')
-  cmd(f'ffmpeg -i ./downloads/{tempmp3} -af volume=2 ./downloads/{mp3file} -y ')
-  cmd(f'ffmpeg -r 1 -loop 1 -y -i {picture} -i ./downloads/{mp3file} -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 {mp4file}')
+  cmd(f'ffmpeg -r 1 -loop 1 -y -i {picture} -i {file_path} -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 {mp4file}')
 
   with open(f'{mp4file}', 'rb') as f:
         bot.send_video(message.chat.id, f)
