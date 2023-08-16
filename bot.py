@@ -56,7 +56,6 @@ def _telegram2_file(client, message):
   with open(f'{mp4file}', 'rb') as f:
         bot.send_video(user_id, f)
   shutil.rmtree('./downloads/')
-  shutil.rmtree('./picy/')
   cmd(f'rm {mp4file}')
 
 
