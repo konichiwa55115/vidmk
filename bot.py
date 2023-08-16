@@ -17,11 +17,15 @@ def command1(bot,message):
     
 @bot.on_message(filters.private & filters.incoming & filters.document | filters.photo)
 def _telegram_file(client, message):
-  if os.path.isdir("./downloads/") :
-        sent_message = message.reply_text('هناك عملية يتم الآن . أرسل الصوتية  بعد مدة من فضلك', quote=True)
-        return
-  else :
-        pass
+  try: 
+    with open('mp4file.mp4', 'r') as fh:
+        if os.stat('mp4file.mp4').st_size == 0: 
+            pass
+        else:
+            sent_message = message.reply_text('هناك عملية منتجة تتم الآن . أرسل بعد مدة من فضلك ', quote=True)
+            return
+  except FileNotFoundError: 
+    pass  
   user_id = message.from_user.id
   sent_message = message.reply_text('الآن أرسل الصوتية', quote=True)
   file = message.document
