@@ -57,7 +57,7 @@ def _telegram_file(client, message):
   cmd(f'ffmpeg -r 1 -loop 1 -y -i {picture} -i {file_path} -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 {mp4file}')
 
   with open(f'{mp4file}', 'rb') as f:
-        bot.send_video(message.chat.id, f)
+        bot.send_video(user_id, f)
   shutil.rmtree('./downloads/')
   shutil.rmtree('./picy/')
   cmd(f'rm {mp4file}')
