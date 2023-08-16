@@ -51,7 +51,7 @@ def _telegram2_file(client, message):
   mp4file="mp4file.mp4"
   global picture
   picture = "./picy/pic"
-  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud.mp3 -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "mp4file.mp4"''')
+  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "mp4file.mp4"''')
 
   with open(f'{mp4file}', 'rb') as f:
         bot.send_video(user_id, f)
