@@ -30,16 +30,9 @@ def _telegram_file(client, message):
   sent_message = message.reply_text('الآن أرسل الصوتية', quote=True)
   file = message.document
   file_path = message.download(file_name="pic")
-  cmd(f'mkdir picy && mv ./downloads/pic ./picy')
-  global picture
-  pictrue="./picy/pic"
-  shutil.rmtree('./downloads/')
-
-    
-    
 
 @bot.on_message(filters.private & filters.incoming & filters.audio | filters.voice )
-def _telegram_file(client, message):
+def _telegram2_file(client, message):
   try: 
     with open('mp4file.mp4', 'r') as fh:
         if os.stat('mp4file.mp4').st_size == 0: 
@@ -53,12 +46,12 @@ def _telegram_file(client, message):
   sent_message = message.reply_text('[جار منتجة الفيديو', quote=True)
   file = message.audio
   global file_path
-  file_path = message.download(file_name="aud.mp3")
+  file_path = message.download(file_name="aud")
   global mp4file
   mp4file="mp4file.mp4"
   global picture
   picture = "./picy/pic"
-  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  "./picy/pic" -i "./downloads/aud.mp3" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "mp4file.mp4"''')
+  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud.mp3 -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "mp4file.mp4"''')
 
   with open(f'{mp4file}', 'rb') as f:
         bot.send_video(user_id, f)
