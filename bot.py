@@ -49,8 +49,6 @@ def _telegram2_file(client, message):
   file_path = message.download(file_name="aud")
   global mp4file
   mp4file="mp4file.mp4"
-  global picture
-  picture = "./picy/pic"
   cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "mp4file.mp4"''')
 
   with open(f'{mp4file}', 'rb') as f:
