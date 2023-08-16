@@ -44,17 +44,13 @@ def _telegram2_file(client, message):
     pass  
   user_id = message.from_user.id
   sent_message = message.reply_text('[جار منتجة الفيديو', quote=True)
-  file = message.audio
+  file = message
   global file_path
   file_path = message.download(file_name="aud")
-  global mp4file
-  mp4file="mp4file.mp4"
-  cmd(f'ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 mp4file.mp4')
-
-  with open(f'{mp4file}', 'rb') as f:
+  cmd(f'ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i downloads/aud -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 res.mp4')
+  with open("res.mp4", 'rb') as f:
         bot.send_video(user_id, f)
   shutil.rmtree('./downloads/')
-  cmd(f'rm {mp4file}')
-
+  cmd(f'rm res.mp4')
 
 bot.run()
