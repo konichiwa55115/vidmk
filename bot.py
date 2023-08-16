@@ -52,7 +52,8 @@ def _telegram2_file(client, message):
   mp3file = f"{nom}.mp3"
   mp4file = f"{nom}.mp4"
   cmd(f'''ffmpeg -i "{file_path}" -q:a 0 -map a "{mp3file}" -y ''')
-  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i "{file_path}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 {mp4file}''')
+  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i "{mp3file}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 mp4file.mp4''')
+  cmd(f'''mv mp4file.mp4 "{mp4file}" 
   with open(mp4file, 'rb') as f:
         bot.send_video(user_id, f)
   shutil.rmtree('./downloads/')
