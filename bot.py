@@ -15,7 +15,7 @@ bot = Client(
 def command1(bot,message):
     bot.send_message(message.chat.id, "  السلام عليكم أنا بوت منتجة الفيديوهات . فقط أرسل التصميم ( الغلاف) بدون ضغط للحفاظ على جودة الفيديو \n\n Send without compression \n\n لبقية البوتات هنا \n\n https://t.me/sunnay6626/2",disable_web_page_preview=True)
     
-@bot.on_message(filters.private & filters.incoming & filters.document | filters.photo)
+@bot.on_message(filters.private & filters.incoming & filters.photo)
 def _telegram_file(client, message):
   try: 
     with open('mp4file.mp4', 'r') as fh:
@@ -31,7 +31,7 @@ def _telegram_file(client, message):
   file = message.document
   file_path = message.download(file_name="pic")
 
-@bot.on_message(filters.private & filters.incoming & filters.audio | filters.voice )
+@bot.on_message(filters.private & filters.incoming & filters.audio | filters.voice | filters.document )
 def _telegram2_file(client, message):
   try: 
     with open('mp4file.mp4', 'r') as fh:
