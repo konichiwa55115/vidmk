@@ -1,7 +1,7 @@
 from os import system as cmd
 from pyrogram.types import InlineKeyboardMarkup , InlineKeyboardButton , ReplyKeyboardMarkup , CallbackQuery , ForceReply,Message
 from pyrogram import Client, filters,enums,StopTransmission
-import os ,re , random ,shutil,asyncio ,pytesseract,requests,logging,time,string,datetime,httplib2
+import os ,re ,random ,shutil,asyncio 
 bot = Client(
     "montagbot",
     api_id=17983098,
