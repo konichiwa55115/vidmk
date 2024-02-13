@@ -1,62 +1,70 @@
-from pyrogram import Client, filters
-import subprocess
-import os
 from os import system as cmd
-import shutil
-
-
+from pyrogram.types import InlineKeyboardMarkup , InlineKeyboardButton , ReplyKeyboardMarkup , CallbackQuery , ForceReply,Message
+from pyrogram import Client, filters,enums,StopTransmission
+import os ,re , random ,shutil,asyncio ,pytesseract,requests,logging,time,string,datetime,httplib2
 bot = Client(
-    "vidmaker",
+    "montagbot",
     api_id=17983098,
     api_hash="ee28199396e0925f1f44d945ac174f64",
-    bot_token="6251349619:AAHWY6-_BIwHqTUzvH62ukVUThjohP13d5k"
+    bot_token="5782497998:AAFdx2dX3yeiyDIcoJwPa_ghY2h_dozEh_E"
 )
-@bot.on_message(filters.command('start') & filters.private)
-def command1(bot,message):
-    bot.send_message(message.chat.id, "  السلام عليكم أنا بوت منتجة الفيديوهات . فقط أرسل التصميم ( الغلاف) بدون ضغط للحفاظ على جودة الفيديو \n\n Send without compression \n\n لبقية البوتات هنا \n\n https://t.me/sunnay6626/2",disable_web_page_preview=True)
-    
-@bot.on_message(filters.private & filters.incoming & filters.photo)
-def _telegram_file(client, message):
-  try: 
-    with open('mp4file.mp4', 'r') as fh:
-        if os.stat('mp4file.mp4').st_size == 0: 
-            pass
-        else:
-            sent_message = message.reply_text('هناك عملية منتجة تتم الآن . أرسل بعد مدة من فضلك ', quote=True)
-            return
-  except FileNotFoundError: 
-    pass  
-  user_id = message.from_user.id
-  sent_message = message.reply_text('الآن أرسل الصوتية', quote=True)
-  file = message.document
-  file_path = message.download(file_name="pic")
+#6032076608:AAGhqffAlibHd7pipzA3HR2-0Ca3sDFlmdI 
+#5782497998:AAFdx2dX3yeiyDIcoJwPa_ghY2h_dozEh_E
+#6306753444:AAFnoiusUbny-fpy4xxZWYqGNh_c7yOioW8
+#6709809460:AAGWWXJBNMF_4ohBNRS22Tg0Q3-vkm376Eo
+#6466415254:AAE_m_mYGHFuu3MT4T0qzqVCm0WvR4biYvM
+#6812722455:AAEjCb1ZwgBa8DZ4_wVNNjDZbe6EtQZOUxo
+photolist = []
+audiolist = []
+videolist = []
+audiolistconv = []
+audioexs = [".mp3",".ogg",".m4a"]
+photoexs = [".jpg",".png"]
 
-@bot.on_message(filters.private & filters.incoming & filters.audio | filters.voice | filters.document )
-def _telegram2_file(client, message):
-  try: 
-    with open('mp4file.mp4', 'r') as fh:
-        if os.stat('mp4file.mp4').st_size == 0: 
-            pass
-        else:
-            sent_message = message.reply_text('هناك عملية منتجة تتم الآن . أرسل بعد مدة من فضلك ', quote=True)
-            return
-  except FileNotFoundError: 
-    pass  
-  user_id = message.from_user.id
-  sent_message = message.reply_text('[جار منتجة الفيديو', quote=True)
-  file = message
-  global file_path
-  file_path = message.download(file_name="./downloads/")
-  filename = os.path.basename(file_path)
-  nom,ex = os.path.splitext(filename)
-  mp3file = f"{nom}.mp3"
-  mp4file = f"{nom}.mp4"
-  cmd(f'''ffmpeg -i "{file_path}" -q:a 0 -map a "{mp3file}" -y ''')
-  cmd(f'''ffmpeg -r 1 -loop 1 -y -i  downloads/pic -i "{mp3file}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 mp4file.mp4''')
-  cmd(f'''mv mp4file.mp4 "{mp4file}" ''')
-  with open(mp4file, 'rb') as f:
-        bot.send_video(user_id, f)
-  shutil.rmtree('./downloads/')
-  cmd(f'''rm "{mp4file}"''')
+async def downloadtoserver(x):
+ global user_id ,file_path,filename,nom,ex,mp4file,mp3file,m4afile,spdrateaud,mergdir,trimdir,result,y
+ file_path = await x.download(file_name="./downloads/")
+ filename = os.path.basename(file_path)
+ nom,ex = os.path.splitext(filename)
+ mp4file = f"{random.randint(1,1000)}.mp4"
+ mp3file = f"{random.randint(1,1000)}.mp3"
+ user_id = x.from_user.id
+ mergdir = f"./mergy/{mp3file}"
+ trimdir = f"./trimmo/{mp3file}"
+ y = f"./downloads/{random.randint(1,1000)}{ex}"
+ os.rename(file_path,y) 
+
+@bot.on_message(filters.private & filters.incoming & filters.voice | filters.audio | filters.video | filters.document | filters.photo | filters.animation )
+async def _telegram_file(client, message):
+   await downloadtoserver(message)
+   if ex in photoexs : 
+      photolist.append(y)
+      videolist.append(mp4file)
+   elif ex in audioexs : 
+        audiolist.append(y)
+        audiolistconv.append(mp3file)
+   await message.reply("بعد الانتهاء أرسل الأمر /monow" , quote=True)
+@bot.on_message(filters.command('monow') & filters.text & filters.private)
+def command4(bot,message):
+   for x in range(0,len(audiolist)):
+    cmd(f'''ffmpeg -i "{audiolist[x]}" -q:a 0 -map a "{audiolistconv[x]}" -y ''')
+    cmd(f'''ffmpeg -r 1 -loop 1 -y -i  "{photolist[x]}" -i "{audiolistconv[x]}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "{videolist[x]}"''')
+    bot.send_video(user_id,videolist[x])
+    os.remove(videolist[x])
+    os.remove(photolist[x])
+    os.remove(audiolist[x])
+    os.remove(audiolistconv[x])
+   audiolist.clear()
+   videolist.clear()
+   audiolistconv.clear()
+   photolist.clear()
+   message.reply("تمت المنتحة ✅" , quote=True)
+
+
 
 bot.run()
+
+      
+
+
+   
