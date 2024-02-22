@@ -20,6 +20,7 @@ videolist = []
 audiolistconv = []
 audioexs = [".mp3",".ogg",".m4a"]
 photoexs = [".jpg",".png"]
+queelist = []
 
 async def downloadtoserver(x):
  global user_id ,file_path,filename,nom,ex,mp4file,mp3file,m4afile,spdrateaud,mergdir,trimdir,result,y
@@ -36,16 +37,20 @@ async def downloadtoserver(x):
 
 @bot.on_message(filters.private & filters.incoming & filters.voice | filters.audio | filters.video | filters.document | filters.photo | filters.animation )
 async def _telegram_file(client, message):
-   await downloadtoserver(message)
-   if ex in photoexs : 
-      photolist.append(y)
-      videolist.append(mp4file)
-   elif ex in audioexs : 
-        audiolist.append(y)
-        audiolistconv.append(mp3file)
+   queelist.append(message)
    await message.reply("بعد الانتهاء أرسل الأمر /monow" , quote=True)
+
+
 @bot.on_message(filters.command('monow') & filters.text & filters.private)
 def command4(bot,message):
+   for x in range(0,len(queelist):
+     await downloadtoserver(queelist[x])
+     if ex in photoexs : 
+       photolist.append(y)
+       videolist.append(mp4file)
+     elif ex in audioexs : 
+        audiolist.append(y)
+        audiolistconv.append(mp3file)
    for x in range(0,len(audiolist)):
     cmd(f'''ffmpeg -i "{audiolist[x]}" -q:a 0 -map a "{audiolistconv[x]}" -y ''')
     cmd(f'''ffmpeg -r 1 -loop 1 -y -i  "{photolist[x]}" -i "{audiolistconv[x]}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "{videolist[x]}"''')
