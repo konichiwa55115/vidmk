@@ -43,7 +43,7 @@ async def _telegram_file(client, message):
 
 @bot.on_message(filters.command('monow') & filters.text & filters.private)
 def command4(bot,message):
-   for x in range(0,len(queelist):
+   for x in range(0,len(queelist)):
      await downloadtoserver(queelist[x])
      if ex in photoexs : 
        photolist.append(y)
