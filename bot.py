@@ -42,7 +42,7 @@ async def _telegram_file(client, message):
 
 
 @bot.on_message(filters.command('monow') & filters.text & filters.private)
-def command4(bot,message):
+async def command4(bot,message):
    for x in range(0,len(queelist)):
      await downloadtoserver(queelist[x])
      if ex in photoexs : 
@@ -54,7 +54,7 @@ def command4(bot,message):
    for x in range(0,len(audiolist)):
     cmd(f'''ffmpeg -i "{audiolist[x]}" -q:a 0 -map a "{audiolistconv[x]}" -y ''')
     cmd(f'''ffmpeg -r 1 -loop 1 -y -i  "{photolist[x]}" -i "{audiolistconv[x]}" -c:v libx264 -tune stillimage -c:a copy -shortest -vf scale=1920:1080 "{videolist[x]}"''')
-    bot.send_video(user_id,videolist[x])
+    await bot.send_video(user_id,videolist[x])
     os.remove(videolist[x])
     os.remove(photolist[x])
     os.remove(audiolist[x])
@@ -63,7 +63,7 @@ def command4(bot,message):
    videolist.clear()
    audiolistconv.clear()
    photolist.clear()
-   message.reply("تمت المنتحة ✅" , quote=True)
+   await message.reply("تمت المنتحة ✅" , quote=True)
 
 
 
