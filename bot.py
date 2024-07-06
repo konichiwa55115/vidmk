@@ -37,12 +37,14 @@ async def downloadtoserver(x):
 
 @bot.on_message(filters.private & filters.incoming & filters.voice | filters.audio | filters.video | filters.document | filters.photo | filters.animation )
 async def _telegram_file(client, message):
-   queelist.append(message)
-   await message.reply("بعد الانتهاء أرسل الأمر /monow" , quote=True)
+   if message.from_user.id == 6234365091 :
+    queelist.append(message)
+    await message.reply("بعد الانتهاء أرسل الأمر /monow" , quote=True)
 
 
 @bot.on_message(filters.command('monow') & filters.text & filters.private)
 async def command4(bot,message):
+  if message.from_user.id == 6234365091 :
    for x in range(0,len(queelist)):
      await downloadtoserver(queelist[x])
      if ex in photoexs : 
