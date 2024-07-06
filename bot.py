@@ -65,6 +65,7 @@ async def command4(bot,message):
    videolist.clear()
    audiolistconv.clear()
    photolist.clear()
+   queelist.clear()
    await message.reply("تمت المنتحة ✅" , quote=True)
 
 
